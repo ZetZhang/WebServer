@@ -1,9 +1,11 @@
 #include <iostream>
 
-#include "src/lib/test.h"
+#include "src/buffer/buffer.h"
 
 int main(int argc, char *argv[])
 {
-    check();
+    // wsv::Buffer buff(10);
+    // buff.append("nihao", 12);
+    // buff.retrieve(-1);
     return 0;
 }
