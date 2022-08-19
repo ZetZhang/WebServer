@@ -14,7 +14,7 @@
 #include <sys/stat.h>   // mkdir
 
 #include "../buffer/buffer.h"
-#include "blockqueue.h"
+#include "blockqueue.hpp"
 
 namespace wsv
 {
@@ -57,19 +57,21 @@ private:
     std::unique_ptr<std::thread>             _writeThread;
 };
 
-}
-
 #define LOG_BASE(level, format, ...)                    \
     do {                                                \
-        wsv::Log *log = Log::Instance();                \
+        wsv::Log *log = wsv::Log::Instance();           \
         if (log->isOpen() && log->getLevel() <= level) {\
             log->write(level, format, ##__VA_ARGS__);   \
             log->flush();                               \
         }                                               \
     } while (0)
+
 #define LOG_DEBUG(format, ...) do { LOG_BASE(0, format, ##__VA_ARGS__); } while (0)
 #define LOG_INFO(format, ...) do { LOG_BASE(1, format, ##__VA_ARGS__); } while (0)
 #define LOG_WARN(format, ...) do { LOG_BASE(2, format, ##__VA_ARGS__); } while (0)
 #define LOG_ERROR(format, ...) do { LOG_BASE(3, format, ##__VA_ARGS__); } while (0)
+
+}
+
 
 #endif // __LOG_H__

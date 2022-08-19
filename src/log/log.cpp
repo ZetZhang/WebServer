@@ -5,7 +5,6 @@
  * @date 2022-08-19
  */
 #include "log.h"
-#include <mutex>
 
 namespace wsv
 {
@@ -83,7 +82,7 @@ void Log::init(int level, const char *path, const char *suffix, int maxQueeuCapa
             _fp = fopen(fileName, "a");
         }
         if (_fp == nullptr) {
-            fprintf(stderr, "[log error]: %s", "_fp == nullptr");
+            fprintf(stderr, "[log error]: %s\n", "_fp == nullptr");
             exit(EXIT_FAILURE);
         }
     }
@@ -137,7 +136,7 @@ void Log::write(int level, const char *format, ...) {
         fclose(_fp);
         _fp = fopen(newFile, "a");
         if (_fp == nullptr) {
-            fprintf(stderr, "[log error]: %s", "_fp == nullptr");
+            fprintf(stderr, "[log error]: %s\n", "_fp == nullptr");
             exit(EXIT_FAILURE);
         }
     }
