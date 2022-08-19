@@ -59,7 +59,8 @@ void Buffer::retrieveUntil(const char *end) {
 }
 
 void Buffer::retrieveAll() {
-    memset(&_buffer, 0, _buffer.size());
+    // memset(&_buffer, 0, _buffer.size());
+    _buffer.clear();
     _readPos = 0;
     _writePos = 0;
 }
@@ -84,7 +85,7 @@ void Buffer::append(const std::string &str) {
 
 void Buffer::append(const void *data, size_t len) {
     NOT_ERR_EXIT(data, "append data");
-    append(data, len);
+    append(static_cast<const char*>(data), len);
 }
 
 void Buffer::append(const Buffer &buff) { // to buff
@@ -104,7 +105,7 @@ ssize_t Buffer::readFd(int fd, int *Errno) {
     const ssize_t len = readv(fd, iov, 2);
     if (len < 0) {
         *Errno = errno;
-    } else if (len <= writable) {
+    } else if (static_cast<size_t>(len) <= writable) {
         _writePos += len;
     } else {
         _writePos = _buffer.size();

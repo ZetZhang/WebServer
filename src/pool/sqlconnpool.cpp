@@ -38,6 +38,7 @@ int SqlConnPool::Init(const char *host, int port, const char *user, const char *
     }
     _maxConn = connSize;
     sem_init(&_semId, 0, _maxConn);
+    return _maxConn;
 }
 
 MYSQL* SqlConnPool::getConn() {
