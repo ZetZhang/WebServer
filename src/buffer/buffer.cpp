@@ -6,7 +6,7 @@
  */
 #include "buffer.h"
 
-#define ERR_EXIT(msg) do { fprintf(stderr, "[buffer error]: %s", msg); exit(EXIT_FAILURE); } while (0)
+#define ERR_EXIT(msg) do { fprintf(stderr, "[buffer error]: %s\n", msg); exit(EXIT_FAILURE); } while (0)
 #define NOT_ERR_EXIT(exp, msg) do { if (!(exp)) { ERR_EXIT(msg); } } while (0)
 
 namespace wsv

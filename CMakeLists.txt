@@ -40,6 +40,7 @@ endif ()
 
 # Other
 set(EXTRA_LIBS ${EXTRA_LIBS} pthread)
+set(EXTRA_LIBS ${EXTRA_LIBS} mysqlclient)
 
 enable_testing()
 
