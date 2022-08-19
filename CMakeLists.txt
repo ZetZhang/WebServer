@@ -18,20 +18,35 @@ set(CMAKE_CXX_FLAGS_RELEASE "-04 -DNDEBUG")
 
 # OPTION
 # option(OBJECT_TESTS "something tset" ON)
-option(USE_BUFFER "Use Buffer implementation" ON)
+option(USE_BUFFER "Use buffer implementation" ON)
+option(USE_LOG "Use log implementation" ON)
+option(USE_POOL "Use pool resource implementation" ON)
 
 if (USE_BUFFER)
     include_directories("${PROJECT_SOURCE_DIR}/src/buffer")
     add_subdirectory(src/buffer)
     set(EXTRA_LIBS ${EXTRA_LIBS} BUFFER)
-endif (USE_BUFFER)
+endif ()
+if (USE_LOG)
+    include_directories("${PROJECT_SOURCE_DIR}/src/log")
+    add_subdirectory(src/log)
+    set(EXTRA_LIBS ${EXTRA_LIBS} LOG)
+endif()
+if (USE_POOL)
+    include_directories("${PROJECT_SOURCE_DIR}/src/pool")
+    add_subdirectory(src/pool)
+    set(EXTRA_LIBS ${EXTRA_LIBS} POOL)
+endif ()
+
+# Other
+set(EXTRA_LIBS ${EXTRA_LIBS} pthread)
 
 enable_testing()
 
 aux_source_directory(src/* SRC_FILES)
 # add_library(webs ${SRC_FILES})
 add_executable(web_server main.cpp ${SRC_FILES})
-target_link_libraries(web_server pthread BUFFER)
+target_link_libraries(web_server ${EXTRA_LIBS})
 
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 

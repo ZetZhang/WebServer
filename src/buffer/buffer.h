@@ -10,6 +10,7 @@
 #include <iostream>
 #include <vector>
 #include <atomic>
+#include <string>
 
 #include <cassert>
 #include <cstring>  // perror

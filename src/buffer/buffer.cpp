@@ -12,7 +12,7 @@
 namespace wsv
 {
 
-Buffer::Buffer(int initBuffSize) : _buffer(initBuffSize), _readPos(0), _writePos(0) {  }
+Buffer::Buffer(int initBuffSize) : _buffer(initBuffSize, 0), _readPos(0), _writePos(0) {  }
 
 size_t Buffer::writableBytes() const { return _buffer.size() - _writePos; }
 
