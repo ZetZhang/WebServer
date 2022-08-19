@@ -6,7 +6,7 @@
 #include "src/pool/sqlconnpool.h"
 #include "src/pool/threadpool.h"
 #include "src/pool/sqlconnRAII.h"
-
+#include "src/timer/heaptimer.h"
 
 int main(int argc, char *argv[])
 {
