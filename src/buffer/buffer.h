@@ -12,7 +12,6 @@
 #include <atomic>
 #include <string>
 
-#include <cassert>
 #include <cstring>  // perror
 
 #include <unistd.h> // write
