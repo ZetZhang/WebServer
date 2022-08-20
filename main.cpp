@@ -8,6 +8,7 @@
 #include "src/pool/sqlconnRAII.h"
 #include "src/timer/heaptimer.h"
 #include "src/server/epoller.h"
+#include "src/http/httpresponse.h"
 
 int main(int argc, char *argv[])
 {
