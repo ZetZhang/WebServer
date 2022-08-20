@@ -9,6 +9,7 @@
 #include "src/timer/heaptimer.h"
 #include "src/server/epoller.h"
 #include "src/http/httpresponse.h"
+#include "src/http/httprequest.h"
 
 int main(int argc, char *argv[])
 {
