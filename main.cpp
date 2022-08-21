@@ -10,6 +10,7 @@
 #include "src/server/epoller.h"
 #include "src/http/httpresponse.h"
 #include "src/http/httprequest.h"
+#include "src/http/httpconn.h"
 
 int main(int argc, char *argv[])
 {

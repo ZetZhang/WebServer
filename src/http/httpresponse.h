@@ -41,13 +41,12 @@ private:
     void _addContent(Buffer &buff);
 
 private:
-    bool _isKeepAlive;
-    int _code;
-    char *_mmFile;
+    bool        _isKeepAlive;
+    int         _code;
+    char        *_mmFile;
     struct stat _mmFileStat;
     std::string _path;
     std::string _srcDir;
-
     static const std::unordered_map<std::string, std::string> SUFFIX_TYPE;
     static const std::unordered_map<int, std::string> CODE_STATUS;
     static const std::unordered_map<int, std::string> CODE_PATH;

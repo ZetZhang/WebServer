@@ -72,11 +72,10 @@ private:
     std::string _path;
     std::string _version;
     std::string _body;
-    std::unordered_map<std::string, std::string> _header;
-    std::unordered_map<std::string, std::string> _post;
-
-    static const std::unordered_set<std::string> DEFAULT_HTML;
-    static const std::unordered_map<std::string, int> DEFAULT_HTML_TAG;
+    std::unordered_map<std::string, std::string>        _header;
+    std::unordered_map<std::string, std::string>        _post;
+    static const std::unordered_set<std::string>        DEFAULT_HTML;
+    static const std::unordered_map<std::string, int>   DEFAULT_HTML_TAG;
 };
 
 }
