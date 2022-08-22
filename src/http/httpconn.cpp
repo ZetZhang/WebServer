@@ -10,7 +10,11 @@
 namespace wsv
 {
 
-HttpConn::HttpConn() : _isClosed(true), _fd(-1), _iovCnt(0), _readBuff{0}, _writeBuff{0} { }
+bool HttpConn::isET;
+const char* HttpConn::srcDir;
+std::atomic<int> HttpConn::userCount;
+
+HttpConn::HttpConn() : _isClosed(true), _fd(-1), _iovCnt(0), _readBuff(), _writeBuff() { }
 HttpConn::~HttpConn() { close(); }
 
 void HttpConn::init(int sockFd, const sockaddr_in &addr) {

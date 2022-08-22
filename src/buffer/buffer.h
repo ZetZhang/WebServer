@@ -61,7 +61,6 @@ private:
     std::atomic<std::size_t> _writePos;
 };
 
-};
-
+}
 
 #endif // __BUFFER_H__

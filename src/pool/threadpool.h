@@ -57,7 +57,7 @@ public:
     }
 
     template<class F>
-    void AddTask(F &&task) {
+    void addTask(F &&task) {
         if (_poolImpl) {
             {
                 std::lock_guard<std::mutex> locker(_poolImpl->mtx);

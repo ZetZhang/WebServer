@@ -25,7 +25,7 @@ public:
 
     bool addFd(int fd, uint32_t events);
     bool modFd(int fd, uint32_t events);
-    bool DelFd(int fd);
+    bool delFd(int fd);
 
     int wait(int timeoutMs = -1);
     int getEventFd(size_t i) const;

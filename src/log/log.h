@@ -7,14 +7,14 @@
 #ifndef __LOG_H__
 #define __LOG_H__
 
+#include "../buffer/buffer.h"
+#include "blockqueue.hpp"
+
 #include <thread>
 
 #include <cstdarg>      // vastart va_end
 
 #include <sys/stat.h>   // mkdir
-
-#include "../buffer/buffer.h"
-#include "blockqueue.hpp"
 
 namespace wsv
 {
@@ -57,6 +57,8 @@ private:
     std::unique_ptr<std::thread>             _writeThread;
 };
 
+}
+
 #define LOG_BASE(level, format, ...)                    \
     do {                                                \
         wsv::Log *log = wsv::Log::Instance();           \
@@ -70,8 +72,5 @@ private:
 #define LOG_INFO(format, ...) do { LOG_BASE(1, format, ##__VA_ARGS__); } while (0)
 #define LOG_WARN(format, ...) do { LOG_BASE(2, format, ##__VA_ARGS__); } while (0)
 #define LOG_ERROR(format, ...) do { LOG_BASE(3, format, ##__VA_ARGS__); } while (0)
-
-}
-
 
 #endif // __LOG_H__

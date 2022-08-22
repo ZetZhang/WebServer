@@ -18,7 +18,7 @@ SqlConnPool::SqlConnPool() : _maxConn(0)/*, _useCount(0), _freeCount(0)*/ { }
 
 SqlConnPool::~SqlConnPool() { closePool(); }
 
-int SqlConnPool::Init(const char *host, int port, const char *user, const char *pwd, const char *dbName, int connSize) {
+int SqlConnPool::init(const char *host, int port, const char *user, const char *pwd, const char *dbName, int connSize) {
     if (connSize <= 0) {
         LOG_ERROR("connSize <= 0");
         exit(EXIT_FAILURE);

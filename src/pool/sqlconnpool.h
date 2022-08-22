@@ -23,7 +23,7 @@ class SqlConnPool
 public:
     static SqlConnPool* Instance();
 
-    int Init(const char *host, int port, const char *user, const char *pwd, const char *dbName, int connSize);
+    int init(const char *host, int port, const char *user, const char *pwd, const char *dbName, int connSize);
 
     MYSQL* getConn();
     void freeConn(MYSQL *conn);

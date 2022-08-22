@@ -9,7 +9,7 @@
 namespace wsv
 {
 
-Log::Log() : _isAsync(false), _isOpen(false), _lineCount(0), _toDay(0), _level(0), _fp(nullptr) { }
+Log::Log() : _isAsync(false), _isOpen(false), _lineCount(0), _toDay(0), _level(0), _fp(nullptr), _buff() { }
 
 Log::~Log() {
     if (_writeThread && _writeThread->joinable()) {
@@ -20,7 +20,7 @@ Log::~Log() {
     }
     if (_fp) {
         std::lock_guard<std::mutex> locker(_mtx);
-        flush();
+        Log::flush();
         fclose(_fp);
     }
 }
@@ -50,7 +50,7 @@ void Log::init(int level, const char *path, const char *suffix, int maxQueeuCapa
 
     if (maxQueeuCapacity > 0) {
         _isAsync = true;
-        if (_deque) {
+        if (!_deque) {
             std::unique_ptr<BlockDeque<std::string>> newDeque(new BlockDeque<std::string>);
             _deque = std::move(newDeque);
             std::unique_ptr<std::thread> newThread(new std::thread(FlushLogThread));
@@ -81,6 +81,7 @@ void Log::init(int level, const char *path, const char *suffix, int maxQueeuCapa
             mkdir(_path, 0777);
             _fp = fopen(fileName, "a");
         }
+        // fputs("logfile\n", _fp); // FIXME
         if (_fp == nullptr) {
             fprintf(stderr, "[log error]: %s\n", "_fp == nullptr");
             exit(EXIT_FAILURE);

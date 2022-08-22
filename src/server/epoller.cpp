@@ -33,7 +33,7 @@ bool Epoller::modFd(int fd, uint32_t events) {
     return 0 == epoll_ctl(_epollFd, EPOLL_CTL_MOD, fd, &ev);
 }
 
-bool Epoller::DelFd(int fd) {
+bool Epoller::delFd(int fd) {
     if (fd < 0) return false;
     epoll_event ev;
     return 0 == epoll_ctl(_epollFd, EPOLL_CTL_DEL, fd, &ev);
