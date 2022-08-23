@@ -81,9 +81,9 @@ void Log::init(int level, const char *path, const char *suffix, int maxQueeuCapa
             mkdir(_path, 0777);
             _fp = fopen(fileName, "a");
         }
-        // fputs("logfile\n", _fp); // FIXME
         if (_fp == nullptr) {
-            fprintf(stderr, "[log error]: %s\n", "_fp == nullptr");
+            std::cout << "test" << std::endl;
+            fprintf(stderr, "[Log > init]: %s\n", "_fp == nullptr");
             exit(EXIT_FAILURE);
         }
     }
@@ -122,7 +122,7 @@ void Log::write(int level, const char *format, ...) {
         locker.unlock();
 
         char newFile[LOG_NAME_LEN];
-        char tail[10]= {0};
+        char tail[11]= {0};
         snprintf(tail, 11, "%04d_%02d_%02d", sysTime->tm_year+1900, sysTime->tm_mon+1, sysTime->tm_mday);
 
         if (_toDay != sysTime->tm_mday) {
@@ -135,9 +135,11 @@ void Log::write(int level, const char *format, ...) {
         locker.lock();
         flush();
         fclose(_fp);
+        std::cout << tail << std::endl;
+        std::cout << newFile << std::endl;
         _fp = fopen(newFile, "a");
         if (_fp == nullptr) {
-            fprintf(stderr, "[log error]: %s\n", "_fp == nullptr");
+            fprintf(stderr, "[Log > write]: %s\n", "_fp == nullptr");
             exit(EXIT_FAILURE);
         }
     }
