@@ -60,8 +60,8 @@ private:
     uint32_t _connEvent;
     char *_srcDir;
     std::unique_ptr<HeapTimer> _timer;
-    std::unique_ptr<Epoller> _epoller;
     std::unique_ptr<ThreadPool> _threadPool;
+    std::unique_ptr<Epoller> _epoller;
     std::unordered_map<int, HttpConn> _users;
 
     static const int MAX_FD = 65536;

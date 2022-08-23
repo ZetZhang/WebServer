@@ -8,6 +8,7 @@
 #define __HTTPRESPONSE_H__
 
 #include <unordered_map>
+#include <cassert>
 
 #include <fcntl.h>
 

@@ -27,7 +27,7 @@ public:
             std::thread([=] {
                 std::unique_lock<std::mutex> locker(_poolImpl->mtx);
                 for (;;) {
-                    if (_poolImpl->tasks.empty()) {
+                    if (!_poolImpl->tasks.empty()) {
                         auto task = std::move(_poolImpl->tasks.front());
                         _poolImpl->tasks.pop();
                         locker.unlock();

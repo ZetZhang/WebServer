@@ -1,9 +1,7 @@
 /**
  * @file httpresponse.cpp
- * @brief  
- *
+ * @brief  response
  * @author Ichheit, <ichheit@outlook.com>
- * @version 
  * @date 2022-08-19
  */
 #include "httpresponse.h"
@@ -46,7 +44,7 @@ const std::unordered_map<int, std::string> HttpResponse::CODE_PATH = {
     { 404, "/404.html" },
 };
 
-HttpResponse::HttpResponse() : _isKeepAlive(false), _code(-1), _mmFile(nullptr), _path(""), _srcDir("") {  }
+HttpResponse::HttpResponse() : _isKeepAlive(false), _code(-1), _mmFile(nullptr), _path(""), _srcDir("") { }
 HttpResponse::~HttpResponse() { unMapFile(); }
 
 char* HttpResponse::file() { return _mmFile; }
@@ -71,9 +69,9 @@ void HttpResponse::init(const std::string &srcDir, std::string &path, bool iskee
     _path = path;
     _srcDir = srcDir;
     _mmFile = nullptr;
+    _mmFileStat = { 0 };
 }
 
-// TODO
 void HttpResponse::makeResponse(Buffer &buff) {
     if (stat((_srcDir + _path).data(), &_mmFileStat) < 0 || S_ISDIR(_mmFileStat.st_mode))
         _code = 404;
@@ -135,10 +133,21 @@ void HttpResponse::_addHeader(Buffer &buff) {
 
 void HttpResponse::_addContent(Buffer &buff) {
     int srcFd = open((_srcDir + _path).data(), O_RDONLY);
-    if (srcFd < 0) {
+    if(srcFd < 0) {
         errorContent(buff, "File NotFound!");
         return;
     }
+
+    // 将文件映射到内存提高文件的访问速度MAP_PRIVATE 建立一个写入时拷贝的私有映射
+    LOG_DEBUG("file path %s", (_srcDir + _path).data());
+    int* mmRet = (int*)mmap(0, _mmFileStat.st_size, PROT_READ, MAP_PRIVATE, srcFd, 0);
+    if(*mmRet == -1) {
+        errorContent(buff, "File NotFound!");
+        return; 
+    }
+    _mmFile = (char*)mmRet;
+    close(srcFd);
+    buff.append("Content-length: " + std::to_string(_mmFileStat.st_size) + "\r\n\r\n");
 }
 
 }

@@ -10,9 +10,12 @@ namespace wsv
 {
 
 WebServer::WebServer(int port, int trigMode, int timeoutMS, bool optLinger, int sqlPort, const char *sqlUser, const char *sqlPwd,
-        const char *dbName, int connPoolNum, int threadNum, bool openLog, int logLevel, int logQueueSize) 
-    : _openLinger(optLinger), _isClosed(false), _port(port), _timeoutMS(timeoutMS), _srcDir(getcwd(nullptr, 256)),
-    _timer(new HeapTimer()), _epoller(new Epoller()), _threadPool(new ThreadPool(threadNum)) {
+        const char *dbName, int connPoolNum, int threadNum, bool openLog, int logLevel, int logQueueSize)
+    : _openLinger(optLinger), _isClosed(false), _port(port), _timeoutMS(timeoutMS),
+    _srcDir(getcwd(nullptr, 256)),
+    _timer(std::make_unique<HeapTimer>()),
+    _threadPool(std::make_unique<ThreadPool>(threadNum)),
+    _epoller(std::make_unique<Epoller>()) {
     if (!_srcDir)
         exit(EXIT_FAILURE);
     strncat(_srcDir, "/resources/", 16);
@@ -29,9 +32,7 @@ WebServer::WebServer(int port, int trigMode, int timeoutMS, bool optLinger, int 
         else {
             LOG_INFO("========== Server init ==========");
             LOG_INFO("Port:%d, OpenLinger: %s", _port, optLinger? "true":"false");
-            LOG_INFO("Listen Mode: %s, OpenConn Mode: %s",
-                            (_listenEvent & EPOLLET ? "ET": "LT"),
-                            (_connEvent & EPOLLET ? "ET": "LT"));
+            LOG_INFO("Listen Mode: %s, OpenConn Mode: %s", (_listenEvent & EPOLLET ? "ET": "LT"), (_connEvent & EPOLLET ? "ET": "LT"));
             LOG_INFO("LogSys level: %d", logLevel);
             LOG_INFO("srcDir: %s", HttpConn::srcDir);
             LOG_INFO("SqlConnPool num: %d, ThreadPool num: %d", connPoolNum, threadNum);
@@ -191,13 +192,13 @@ void WebServer::_dealWrite(HttpConn *client) {
 }
 
 void WebServer::_dealRead(HttpConn *client) {
- assert(client);
+    assert(client);
     _extentTime(client);
     _threadPool->addTask(std::bind(&WebServer::_onRead, this, client));
 }
 
 void WebServer::_sendError(int fd, const char *info) {
- assert(fd > 0);
+    assert(fd > 0);
     int ret = send(fd, info, strlen(info), 0);
     if(ret < 0) {
         LOG_WARN("send error to client[%d] error!", fd);
@@ -206,7 +207,7 @@ void WebServer::_sendError(int fd, const char *info) {
 }
 
 void WebServer::_extentTime(HttpConn *client) {
- assert(client);
+    assert(client);
     if(_timeoutMS > 0) { _timer->adjust(client->getFd(), _timeoutMS); }
 }
 

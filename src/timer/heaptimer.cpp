@@ -9,7 +9,7 @@
 namespace wsv
 {
 
-HeapTimer::HeapTimer() : _heap(64) { }
+HeapTimer::HeapTimer() { _heap.reserve(64); }
 HeapTimer::~HeapTimer() { clear(); }
 
 void HeapTimer::_swapNode(size_t i, size_t j) {
@@ -82,6 +82,9 @@ void HeapTimer::add(int id, int timeout, const TimeoutCallBack &cb) {
         i = _heap.size();
         _ref[id] = i;
         _heap.push_back({id, Clock::now() + Millisecond(timeout), cb});
+        _siftup(i);
+        TimerNode node = _heap.front();
+        node.callBack();
     } else { // change
         i = _ref[id];
         _heap[i].expires = Clock::now() + Millisecond(timeout);
